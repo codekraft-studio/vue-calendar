@@ -1,0 +1,51 @@
+{
+  "name": "@codekraft-studio/vue-calendar",
+  "version": "0.0.1",
+  "main": "dist/VueCalendar.umd.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Filippo Conti",
+  "license": "MIT",
+  "homepage": "https://github.com/codekraft-studio/vue-calendar",
+  "keywords": [
+    "calendar",
+    "momentjs",
+    "vue",
+    "vue-calendar",
+    "vue-plugin",
+    "vue-components"
+  ],
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --target lib --name VueCalendar lib/index.js",
+    "build:demo": "vue-cli-service build --dest demo",
+    "lint": "vue-cli-service lint",
+    "test:e2e": "vue-cli-service test:e2e",
+    "test:unit": "vue-cli-service test:unit"
+  },
+  "dependencies": {
+    "lodash.mergewith": "^4.6.1",
+    "moment": "^2.22.2",
+    "vue": "^2.5.17"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.2.0",
+    "@vue/cli-plugin-e2e-cypress": "^3.2.0",
+    "@vue/cli-plugin-eslint": "^3.2.1",
+    "@vue/cli-plugin-unit-jest": "^3.2.0",
+    "@vue/cli-service": "^3.2.0",
+    "@vue/test-utils": "^1.0.0-beta.20",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
+    "babel-jest": "^23.6.0",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0-0",
+    "node-sass": "^4.9.0",
+    "sass-loader": "^7.0.1",
+    "vue-template-compiler": "^2.5.17"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -1,0 +1,399 @@
+@import "font.scss";
+
+$textColor: #707070;
+$textColorDisabled: #d3d3d3;
+$textColorReverted: #fff;
+$bgColor: #fff;
+// The primary color is used when highlighting the active
+// parts of the calendar such active month, day, other..
+$primaryColor: #41b883;
+// custom measures & align
+$calendar-side-padding: 16px;
+$calendar-cell-padding: 14px;
+
+@mixin calendar-slot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  flex-direction: column;
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.vue-calendar {
+  color: $textColorDisabled;
+  position: relative;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 300;
+  font-size: 17px;
+
+  * {
+    box-sizing: border-box;
+    user-select: none;
+  }
+
+  // The main wrapper for layout elements
+  // such as calendar header, body and footer
+  .calendar-container {
+    background-color: $bgColor;
+    box-shadow: 0 20px 30px -40px black;
+    border-radius: 18px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .calendar-header {
+    @include calendar-slot;
+
+    .calendar-header-top {}
+
+    .calendar-header-bottom {}
+
+    .calendar-header-body {}
+
+    .calendar-controls {
+      padding: 16px 8px;
+    }
+
+    .calendar-date-picker {
+      font-size: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 0 $calendar-cell-padding;
+
+      .calendar-arrow {
+        font-size: 24px;
+        font-weight: 400;
+        display: inline-block;
+        padding: $calendar-cell-padding;
+        cursor: pointer;
+        color: $textColorDisabled;
+        transform: scale(1);
+        transition: all 250ms ease;
+
+        &.calendar-month {}
+
+        &.calendar-year {
+          color: darken($textColorDisabled, 20%);
+        }
+
+        &:hover {
+          color: $primaryColor;
+          transform: scale(1.5);
+        }
+      }
+
+      .calendar-current-date {
+        min-width: 180px;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        font-weight: 300;
+        color: darken($textColorDisabled, 15%);
+        font-size: 28px;
+
+        .calendar-week {
+          margin-right: 6px;
+        }
+
+        .calendar-month {
+          cursor: pointer;
+        }
+
+        .calendar-year {
+          color: $primaryColor;
+          font-weight: 800;
+          margin-left: 8px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  // The actual calendar body containing labels and cells
+  .calendar-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    // Months and days wrapper shown before
+    // the calendar days grid in the upper section
+    .calendar-labels {
+      .calendar-label-months {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        border-bottom: thin solid darken($textColorDisabled, 20%);
+        font-size: 15px;
+        font-weight: 300;
+        padding: $calendar-cell-padding;
+
+        .calendar-label-monthname {
+          text-align: center;
+          cursor: pointer;
+          text-transform: capitalize;
+
+          &.calendar-label-monthname__selected {
+            color: $primaryColor;
+          }
+        }
+      }
+      .calendar-label-days {
+        display: flex;
+        text-transform: uppercase;
+        text-align: center;
+
+        .ccalendar-label-dayname {
+          width: 100%;
+          margin: 0;
+          padding: $calendar-cell-padding;
+          color: darken($textColorDisabled, 15%);
+          font-size: 18px;
+          font-weight: 600;
+
+          &.ccalendar-label-dayname__current {
+            color: #41b883;
+          }
+        }
+      }
+    }
+
+    // The calendar grid with the day cells
+    .calendar-grid {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+
+      .calendar-week {
+        width: 100%;
+        display: flex;
+      }
+
+      .calendar-day {
+        font-size: 18px;
+        font-weight: 300;
+        color: $textColor;
+        flex-grow: 1;
+        flex-shrink: 1;
+        flex-basis: 0;
+        padding: $calendar-cell-padding;
+        margin: 0;
+        transition: all 250ms ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+
+        .calendar-day-number {
+          position: relative;
+          line-height: 40px;
+          text-align: center;
+          display: block;
+        }
+
+        &:before {
+          content: "";
+          position: absolute;
+          display: block;
+          width: 0;
+          height: 0;
+          padding: 0;
+          transition: 150ms;
+        }
+
+        &.calendar-day__prev {}
+        &.calendar-day__next {}
+
+        &.calendar-day__disabled {
+          color: $textColorDisabled;
+          cursor: default;
+        }
+
+        // The cell that is in the current view
+        &.calendar-day__active {
+          &:hover {
+            &:before {
+              padding: 20px;
+              background-color: $primaryColor;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0, 0, 0, 0.20);
+            }
+            .calendar-day-number {
+              color: $textColorReverted;
+            }
+          }
+        }
+
+        // The cell that match today
+        &.calendar-day__today {
+          color: $primaryColor;
+        }
+
+        // The cell that has been selected
+        &.calendar-day__selected {
+          background-color: lighten($primaryColor, 10);
+          .calendar-day-events {
+            background-color: white;
+          }
+        }
+      }
+
+      .calendar-day-events {
+        background-color: #47db99;
+        color: white;
+        font-size: 0;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        position: relative;
+        top: 6px;
+        left: 2px;
+      }
+
+      .calendar-hours {
+        width: 100%;
+        display: flex;
+
+        .hours {
+          width: 100%;
+        }
+
+        .cell {
+          width: 100%;
+          height: 25px;
+          display: inline-block;
+
+          &.cell__is-hour {
+            border-bottom: thin solid #d2d2d2;
+          }
+        }
+      }
+    }
+  }
+
+  .calendar-footer {
+    @include calendar-slot;
+
+    .calendar-footer-top {}
+
+    .calendar-footer-bottom {}
+  }
+
+
+
+  // TODO: This part should be modified using a common wrapper
+  // and a customizable animation should be shown once the
+  // pickers shows up such as slideInDown or something
+  .calendar-monthpicker,
+  .calendar-yearpicker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: $primaryColor;
+    transition: 500ms all ease;
+    transform: translateY(-100%);
+
+    &.active {
+      transform: translateY(0%);
+    }
+  }
+
+  .calendar-months-picker {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    flex-wrap: wrap;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-family: sans-serif;
+    transition: all 250ms ease;
+
+    .calendar-month {
+      display: flex;
+      flex: 1 1 33%;
+      text-align: center;
+      cursor: pointer;
+      padding: 10px;
+      align-items: center;
+      justify-content: center;
+      transition: all 250ms ease;
+
+      &.calendar-month__selected {
+        background-color: rgba(0, 0, 0, 0.2);
+        font-weight: 600;
+        color: #fff;
+      }
+
+      &.calendar-month__current {
+        background-color: #4fe6a3;
+        font-weight: 300;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+        font-weight: 600;
+        color: #fff;
+      }
+    }
+  }
+
+  .calendar-years-picker {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+    flex-wrap: wrap;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-family: sans-serif;
+    transition: all 250ms ease;
+
+    .calendar-year {
+      display: flex;
+      flex: 1 1 50%;
+      text-align: center;
+      cursor: pointer;
+      padding: 10px;
+      align-items: center;
+      justify-content: center;
+      transition: all 250ms ease;
+
+      &.calendar-year__selected {
+        background-color: rgba(0, 0, 0, 0.2);
+        font-weight: 600;
+        color: #fff;
+      }
+
+      &.calendar-year__cursor {
+        background-color: rgba(0, 0, 0, 0.2) !important;
+      }
+
+      &.calendar-year__current {
+        background-color: #4fe6a3;
+        font-weight: 300;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+        font-weight: 600;
+        color: #fff;
+      }
+    }
+  }
+}
